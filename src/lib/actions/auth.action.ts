@@ -87,7 +87,7 @@ export async function signIn(params: SignInParams) {
             message: "Account SignedIn successfully.",
         };
     } catch (error: any) {
-        console.log("");
+        console.log(error);
 
         return {
             success: false,

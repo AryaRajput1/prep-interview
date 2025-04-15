@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
+import { createFeedback } from "@/lib/actions/general.action";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -83,9 +84,11 @@ const Agent = ({
   }, []);
 
   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-    console.log("handleGenerateFeedback");
-
-    const { success, feedbackId: id } = { success: true, feedbackId: "123" }; // Mocked response
+    const { success, feedbackId: id } = await createFeedback({
+      userId: userId!,
+      interviewId: interviewId!,
+      transcript: messages,
+    });
 
     if (success && id) {
       router.push(`/interview/${interviewId}/feedback`);

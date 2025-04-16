@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import DisplayTechIcons from "./displayTechIcons";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
+import { MotionDiv } from "./motion/wrapper";
 
 async function InterviewCard({
   createdAt,
@@ -31,7 +32,15 @@ async function InterviewCard({
     }[normalizedType] || "bg-light-600";
 
   return (
-    <div className="card-border w-[360px] max-sm:w-full min-h-96">
+    <MotionDiv
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.2,
+        delay: 0.5
+      }}
+      className="card-border w-[360px] max-sm:w-full min-h-96"
+    >
       <div className="card-interview">
         <div>
           {/* Type Badge */}
@@ -93,7 +102,7 @@ async function InterviewCard({
           </Button>
         </div>
       </div>
-    </div>
+    </MotionDiv>
   );
 }
 export default InterviewCard;

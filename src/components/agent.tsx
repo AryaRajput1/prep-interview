@@ -9,6 +9,8 @@ import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { createFeedback } from "@/lib/actions/general.action";
+import { MotionDiv } from "./motion/wrapper";
+import { toast } from "sonner";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -91,9 +93,10 @@ const Agent = ({
     });
 
     if (success && id) {
+      toast.success("Welldone, Feedback generated successfully!");
       router.push(`/interview/${interviewId}/feedback`);
     } else {
-      console.log("Error saving feedback");
+      toast.error("Oh No, Failed to generate feedback. Please try again.");
       router.push("/");
     }
   };
@@ -147,7 +150,14 @@ const Agent = ({
     <>
       <div className="call-view">
         {/* AI Interviewer Card */}
-        <div className="card-interviewer">
+        <MotionDiv
+          className="card-interviewer"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.2,
+          }}
+        >
           <div className="avatar">
             <Image
               src="/ai-avatar.png"
@@ -159,10 +169,18 @@ const Agent = ({
             {isSpeaking && <span className="animate-speak" />}
           </div>
           <h3>AI Interviewer</h3>
-        </div>
+        </MotionDiv>
 
         {/* User Profile Card */}
-        <div className="card-border">
+        <MotionDiv
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.2,
+            delay: 0.2,
+          }}
+          className="card-border"
+        >
           <div className="card-content">
             <Image
               src="/user-avatar.png"
@@ -173,7 +191,7 @@ const Agent = ({
             />
             <h3>{userName}</h3>
           </div>
-        </div>
+        </MotionDiv>
       </div>
 
       {messages.length > 0 && (
@@ -194,24 +212,51 @@ const Agent = ({
 
       <div className="w-full flex justify-center">
         {callStatus !== "ACTIVE" ? (
-          <button className="relative btn-call" onClick={() => handleCall()}>
-            <span
-              className={cn(
-                "absolute animate-ping rounded-full opacity-75",
-                callStatus !== "CONNECTING" && "hidden"
-              )}
-            />
+          <MotionDiv
+            whileHover={{
+              scale: 1.05,
+              shadow: "0 0 10px rgba(0,0,0,0.2)",
+              margin: "0 10px",
+            }}
+            whileTap={{ scale: 0.95, margin: "0" }}
+            transition={{
+              duration: 0.2,
+            }}
+          >
+            <button className="relative btn-call" onClick={() => handleCall()}>
+              <span
+                className={cn(
+                  "absolute animate-ping rounded-full opacity-75",
+                  callStatus !== "CONNECTING" && "hidden"
+                )}
+              />
 
-            <span className="relative">
-              {callStatus === "INACTIVE" || callStatus === "FINISHED"
-                ? "Call"
-                : ". . ."}
-            </span>
-          </button>
+              <span className="relative">
+                {callStatus === "INACTIVE" || callStatus === "FINISHED"
+                  ? "Call"
+                  : ". . ."}
+              </span>
+            </button>
+          </MotionDiv>
         ) : (
-          <button className="btn-disconnect" onClick={() => handleDisconnect()}>
-            End
-          </button>
+          <MotionDiv
+            whileHover={{
+              scale: 1.05,
+              shadow: "0 0 10px rgba(0,0,0,0.2)",
+              margin: "0 10px",
+            }}
+            whileTap={{ scale: 0.95, margin: "0" }}
+            transition={{
+              duration: 0.2,
+            }}
+          >
+            <button
+              className="btn-disconnect"
+              onClick={() => handleDisconnect()}
+            >
+              End
+            </button>
+          </MotionDiv>
         )}
       </div>
     </>

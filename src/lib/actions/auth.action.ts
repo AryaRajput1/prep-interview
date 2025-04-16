@@ -28,8 +28,6 @@ export async function setSessionCookie(idToken: string) {
 export async function signUp(params: SignUpParams) {
     const { uid, name, email } = params;
 
-    console.log(params)
-
     try {
         // check if user exists in db
         const userRecord = await db.collection("users").doc(uid).get();
@@ -52,7 +50,6 @@ export async function signUp(params: SignUpParams) {
             message: "Account created successfully. Please sign in.",
         };
     } catch (error: any) {
-        console.error("Error creating user:", error);
 
         // Handle Firebase specific errors
         if (error.code === "auth/email-already-exists") {
@@ -87,8 +84,6 @@ export async function signIn(params: SignInParams) {
             message: "Account SignedIn successfully.",
         };
     } catch (error: any) {
-        console.log(error);
-
         return {
             success: false,
             message: "Failed to log into account. Please try again.",
@@ -125,8 +120,6 @@ export async function getCurrentUser(): Promise<User | null> {
             id: userRecord.id,
         } as User;
     } catch (error) {
-        console.log(error);
-
         // Invalid or expired session
         return null;
     }

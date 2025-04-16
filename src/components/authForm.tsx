@@ -100,7 +100,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
       }
       
       toast.error("Something went wrong. Please try again.");
-      console.error("Error:", error);
     } finally {
       setIsLoading(false);
     }

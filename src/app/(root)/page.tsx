@@ -76,10 +76,10 @@ async function RootPage() {
       <section className="flex flex-col gap-6 mt-8">
         <h2>Take an Interview</h2>
         <div className="interviews-section">
-          {!userInterviews?.length ? (
+          {!allLatestInterviews?.length ? (
             <p>There are no more Interviews.</p>
           ) : (
-            userInterviews?.map((interview, index) => (
+            allLatestInterviews?.map((interview, index) => (
               <InterviewCard {...interview} key={interview.id} />
             ))
           )}
